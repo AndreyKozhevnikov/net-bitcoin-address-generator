@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyGenerator", "KeyGenerator\KeyGenerator.csproj", "{A1F719DF-ADA7-4BEC-88DC-3AE193B0F36D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyGenerator", "KeyGenerator\KeyGenerator.csproj", "{A1F719DF-ADA7-4BEC-88DC-3AE193B0F36D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsKeyGenerator", "TestsKeyGenerator\TestsKeyGenerator.csproj", "{9B6F9C8E-E2A3-4201-8273-4A61752DB70D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsKeyGenerator", "TestsKeyGenerator\TestsKeyGenerator.csproj", "{9B6F9C8E-E2A3-4201-8273-4A61752DB70D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyGen", "KeyGen\KeyGen.csproj", "{8D595CDA-38B8-4DE8-AA0C-49668F5B5F94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9B6F9C8E-E2A3-4201-8273-4A61752DB70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B6F9C8E-E2A3-4201-8273-4A61752DB70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B6F9C8E-E2A3-4201-8273-4A61752DB70D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D595CDA-38B8-4DE8-AA0C-49668F5B5F94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D595CDA-38B8-4DE8-AA0C-49668F5B5F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D595CDA-38B8-4DE8-AA0C-49668F5B5F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D595CDA-38B8-4DE8-AA0C-49668F5B5F94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

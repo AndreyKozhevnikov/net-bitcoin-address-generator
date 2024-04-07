@@ -1,21 +1,30 @@
 ﻿using NUnit.Framework;
-
+using KeyGenNameSpace;
 namespace TestsKeyGenerator {
     [TestFixture]
     public class HashConverterTest {
         [Test]
-        public void Test() {
-            var input = "11F53BE6DC18F1DD5DC9F111D83EB93F0F9B09BDA1812B000000000000000000";
-            var res = "test1";
-            Assert.AreEqual("0000000000000000002b81a1bd099b0f3fb93ed811f1c95dddf118dce63bf511", res);
+        public void TestPriv() {
+            var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
+            var res = KeyGen.GenerateFromString(input);
+            Assert.AreEqual("9ddb55473effb85d2af6e24b99ade223a4e6f932d4933bdd4722b692b744cd23", res.PrivateKey);
+            
 
         }
         [Test]
-        public void Test2() {
-            var input = "11F53BE6DC18F1DD5DC9F111D83EB93F0F9B09BDA1812B000000000000000000";
-            var res = "test1";
-            Assert.AreEqual("test1", res);
+        public void TestWif() {
+            var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
+            var res = KeyGen.GenerateFromString(input);
+            Assert.AreEqual("L2WZevbYBAtLKbK76UNVu4sjqyibc3kc2qS6Qxwvpt5dhk35W19E", res.WIF);
+
 
         }
+        //[Test]
+        //public void Test2() {
+        //    var input = "11F53BE6DC18F1DD5DC9F111D83EB93F0F9B09BDA1812B000000000000000000";
+        //    var res = "test1";
+        //    Assert.AreEqual("test1", res);
+
+        //}
     }
 }
