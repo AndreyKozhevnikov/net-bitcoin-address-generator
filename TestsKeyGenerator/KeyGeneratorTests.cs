@@ -7,7 +7,7 @@ namespace TestsKeyGenerator {
         public void TestPriv() {
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
             var res = KeyGen.GenerateFromString(input);
-            Assert.AreEqual("9ddb55473effb85d2af6e24b99ade223a4e6f932d4933bdd4722b692b744cd23", res.PrivateKey);
+            Assert.AreEqual("9DDB55473EFFB85D2AF6E24B99ADE223A4E6F932D4933BDD4722B692B744CD23", res.PrivateKey);
             
 
         }

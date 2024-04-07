@@ -1,4 +1,6 @@
-﻿using SimpleBase;
+﻿using Nethereum.Signer;
+using Nethereum.Signer.Crypto;
+using SimpleBase;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,19 +17,16 @@ namespace KeyGenNameSpace {
             return GenerateFromBytes(hashValue);
         }
         public static AddressSet GenerateFromBytes(byte[] bytes) {
-            //   byte[] bytes = Encoding.ASCII.GetBytes(value);
-            var hexPrivate = Convert.ToHexString(bytes).ToLower();
+            //private key
+            var hexPrivate = Convert.ToHexString(bytes);
             var fullKey = "80" + hexPrivate + "01";
             SHA256 mySHA256 = SHA256.Create();
             byte[] fullKeybytes = Convert.FromHexString(fullKey);
             var sha1 = mySHA256.ComputeHash(fullKeybytes);
-            //var sha1Hex = Convert.ToHexString(sha1);
-            //byte[] sha1Hexbytes = Convert.FromHexString(sha1Hex);
             var sha2 = mySHA256.ComputeHash(sha1);
-            //   var sha3= mySHA256.ComputeHash(sha1);
-            // var st2 = Convert.ToHexString(sha2);
             var sha2hex = Convert.ToHexString(sha2);
 
+            //wif
             var checkSum = sha2hex.Substring(0,8);
             var wifString = fullKey + checkSum;
             var wifBytes=Convert.FromHexString(wifString);
