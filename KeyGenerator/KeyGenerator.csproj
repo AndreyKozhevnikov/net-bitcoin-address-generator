@@ -11,4 +11,12 @@
     <Folder Include="NewFolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NBitcoin" Version="7.0.36" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KeyGen\KeyGen.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -18,12 +18,24 @@ public class KeyGen {
 
         return GenerateFromBytes(hashValue);
     }
+
+    public static void Initialize() {
+        secp256k1 = new  Secp256k1();
+        mySHA256 = SHA256.Create();
+    }
+
     static SHA256 mySHA256;
+   static Secp256k1 secp256k1;
     public static AddressSet GenerateFromBytes(byte[] bytes) {
+
+        if(secp256k1 == null) {
+            Initialize();
+        }
+
         //private key
         var hexPrivate = Convert.ToHexString(bytes);
         var fullKey = "80" + hexPrivate + "01";
-        mySHA256 = SHA256.Create();
+        
         //byte[] fullKeybytes = Convert.FromHexString(fullKey);
         //var sha1 = mySHA256.ComputeHash(fullKeybytes);
         //var sha2 = mySHA256.ComputeHash(sha1);
@@ -37,7 +49,7 @@ public class KeyGen {
 
 
         //public
-        using var secp256k1 = new Secp256k1();
+      //  using var secp256k1 = new Secp256k1();
 
         // Generate a private key
         var privateKey = bytes;
