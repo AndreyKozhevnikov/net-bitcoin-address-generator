@@ -8,6 +8,8 @@
 
   <ItemGroup>
  
+    <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" />
+ 
     <PackageReference Include="Secp256k1.Native" Version="0.1.23" />
     <PackageReference Include="Secp256k1.Net" Version="1.2.0" />
     <PackageReference Include="SimpleBase" Version="4.0.0" />
