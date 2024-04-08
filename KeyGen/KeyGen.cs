@@ -24,41 +24,12 @@ public class KeyGen {
         mySHA256 = SHA256.Create();
     }
 
-    public void Initialize(Secp256k1 _sec) {
-        secp256k1 = _sec;
-        mySHA256 = SHA256.Create(); 
-    }
+
 
     SHA256 mySHA256;
     Secp256k1 secp256k1;
-    public AddressSet GenerateFromBytes(byte[] bytes) {
 
-        if(secp256k1 == null) {
-            Initialize();
-        }
-
-        //private key
-        var hexPrivate = Convert.ToHexString(bytes);
-        var fullKey = "80" + hexPrivate + "01";
-
-        //byte[] fullKeybytes = Convert.FromHexString(fullKey);
-        //var sha1 = mySHA256.ComputeHash(fullKeybytes);
-        //var sha2 = mySHA256.ComputeHash(sha1);
-        //var sha2hex = Convert.ToHexString(sha2);
-
-        //wif
-        var checkSum = GetCheckSum(fullKey);
-        var wifString = fullKey + checkSum;
-        var wifBytes = Convert.FromHexString(wifString);
-        string wif = Base58.Bitcoin.Encode(wifBytes);
-
-
-        //public
-        //  using var secp256k1 = new Secp256k1();
-
-        // Generate a private key
-        var privateKey = bytes;
-
+    public byte[] GetPublicKey(byte[] privateKey) {
         secp256k1.SecretKeyVerify(privateKey);
 
         // Derive public key bytes
@@ -69,8 +40,34 @@ public class KeyGen {
         // Serialize the public key to compressed format
         var compressed_public_key = new byte[Secp256k1.SERIALIZED_COMPRESSED_PUBKEY_LENGTH];
         secp256k1.PublicKeySerialize(compressed_public_key, publicKey, Flags.SECP256K1_EC_COMPRESSED);
-        var compressed_public_key_st = Convert.ToHexString(compressed_public_key).ToLower();
+       
+        return compressed_public_key;
+    }
 
+    public AddressSet GenerateFromBytes(byte[] bytes) {
+
+        if(secp256k1 == null) {
+            Initialize();
+        }
+
+        //private key
+        var hexPrivate = Convert.ToHexString(bytes);
+        var fullKey = "80" + hexPrivate + "01";
+
+        //wif
+        var checkSum = GetCheckSum(fullKey);
+        var wifString = fullKey + checkSum;
+        var wifBytes = Convert.FromHexString(wifString);
+        string wif = Base58.Bitcoin.Encode(wifBytes);
+
+
+        //public
+
+        // Generate a private key
+        var privateKey = bytes;
+
+        var compressed_public_key = GetPublicKey(privateKey);
+        var compressed_public_key_st = Convert.ToHexString(compressed_public_key).ToLower();
         //ripe160    
         var hasher = new Org.BouncyCastle.Crypto.Digests.RipeMD160Digest();
         var publSha = mySHA256.ComputeHash(compressed_public_key);
@@ -83,10 +80,9 @@ public class KeyGen {
 
         var public_key_hash = "00" + public_key_hash_clean;
 
-        //fullKeybytes = Convert.FromHexString(public_key_hash);
-        //sha1 = mySHA256.ComputeHash(fullKeybytes);
-        //sha2 = mySHA256.ComputeHash(sha1);
-        //sha2hex = Convert.ToHexString(sha2);
+       
+        //1adr
+
         checkSum = GetCheckSum(public_key_hash);
         wifString = public_key_hash + checkSum;
         wifBytes = Convert.FromHexString(wifString);
