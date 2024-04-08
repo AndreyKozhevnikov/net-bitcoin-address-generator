@@ -1,6 +1,7 @@
 ﻿using KeyGenNameSpace;
 using NBitcoin;
 using System;
+using System.Diagnostics;
 
 namespace MyApp {
     internal class Program {
@@ -12,7 +13,7 @@ namespace MyApp {
 
 
             var t1 = new Test();
-            t1.Test1();
+            t1.Test3();
         }
     }
 
@@ -59,6 +60,23 @@ namespace MyApp {
 
             var t = TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds);
             Console.WriteLine(t.ToString());
+        }
+
+
+        public void Test3() {
+            var t1 = new Thread(GenerateKeys);
+            var t2=new Thread(GenerateKeys);
+
+            t1.Start();
+            t2.Start();
+        }
+        void GenerateKeys() {
+            var k = new KeyGen();
+            for(int i = 0; i < 1000; i++) {
+                var adrSet = k.GenerateFromString(i.ToString());
+                var val = adrSet.Addresses[1];
+                Debug.Print(val.ToString());
+            }
         }
     }
 }
