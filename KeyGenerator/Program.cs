@@ -20,11 +20,12 @@ namespace MyApp {
         public void Test1() {
             
             var r = new Random(DateTime.Now.Millisecond);
+            var k=new  KeyGen();
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            for(int i = 0; i < 10000; i++) {
+            for(int i = 0; i < 1000; i++) {
                 byte[] bytes = new byte[32];
                 r.NextBytes(bytes);
-                var adrSet = KeyGen.GenerateFromBytes(bytes);
+                var adrSet = k.GenerateFromBytes(bytes);
                 if(i == 100) {
                     watch.Restart();
                 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace KeyGenNameSpace;
 public class KeyGen {
-    public static AddressSet GenerateFromString(string value) {
+    public AddressSet GenerateFromString(string value) {
         byte[] bytes = Encoding.ASCII.GetBytes(value);
         SHA256 mySHA256 = SHA256.Create();
         byte[] hashValue = mySHA256.ComputeHash(bytes);
@@ -19,14 +19,19 @@ public class KeyGen {
         return GenerateFromBytes(hashValue);
     }
 
-    public static void Initialize() {
-        secp256k1 = new  Secp256k1();
+    public void Initialize() {
+        secp256k1 = new Secp256k1();
         mySHA256 = SHA256.Create();
     }
 
-    static SHA256 mySHA256;
-   static Secp256k1 secp256k1;
-    public static AddressSet GenerateFromBytes(byte[] bytes) {
+    public void Initialize(Secp256k1 _sec) {
+        secp256k1 = _sec;
+        mySHA256 = SHA256.Create(); 
+    }
+
+    SHA256 mySHA256;
+    Secp256k1 secp256k1;
+    public AddressSet GenerateFromBytes(byte[] bytes) {
 
         if(secp256k1 == null) {
             Initialize();
@@ -35,7 +40,7 @@ public class KeyGen {
         //private key
         var hexPrivate = Convert.ToHexString(bytes);
         var fullKey = "80" + hexPrivate + "01";
-        
+
         //byte[] fullKeybytes = Convert.FromHexString(fullKey);
         //var sha1 = mySHA256.ComputeHash(fullKeybytes);
         //var sha2 = mySHA256.ComputeHash(sha1);
@@ -49,7 +54,7 @@ public class KeyGen {
 
 
         //public
-      //  using var secp256k1 = new Secp256k1();
+        //  using var secp256k1 = new Secp256k1();
 
         // Generate a private key
         var privateKey = bytes;
@@ -107,7 +112,7 @@ public class KeyGen {
         //bc adr
 
         var witprog = Convert.FromHexString(public_key_hash_clean);
-       // var ver = Convert.FromHexString("0x00");
+        // var ver = Convert.FromHexString("0x00");
         var adrBC = Bech32Converter.EncodeBech32(0, witprog, true, true);
         //var adrBC2 = Bech32Converter.EncodeBech32(0, witprog, false, true);
 
@@ -122,7 +127,7 @@ public class KeyGen {
         return adr;
     }
 
-    static string GetCheckSum(string key) {
+    string GetCheckSum(string key) {
         var fullKeybytes = Convert.FromHexString(key);
         var sha1 = mySHA256.ComputeHash(fullKeybytes);
         var sha2 = mySHA256.ComputeHash(sha1);

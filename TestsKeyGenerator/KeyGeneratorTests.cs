@@ -8,7 +8,7 @@ namespace TestsKeyGenerator {
          
 
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
-            var res = KeyGen.GenerateFromString(input);
+            var res = new KeyGen().GenerateFromString(input);
             Assert.AreEqual("9DDB55473EFFB85D2AF6E24B99ADE223A4E6F932D4933BDD4722B692B744CD23", res.PrivateKey);
             
 
@@ -16,7 +16,7 @@ namespace TestsKeyGenerator {
         [Test]
         public void TestWif() {
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
-            var res = KeyGen.GenerateFromString(input);
+            var res = new KeyGen().GenerateFromString(input);
             Assert.AreEqual("L2WZevbYBAtLKbK76UNVu4sjqyibc3kc2qS6Qxwvpt5dhk35W19E", res.WIF);
 
 
@@ -24,7 +24,7 @@ namespace TestsKeyGenerator {
         [Test]
         public void Test1adr() {
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
-            var res = KeyGen.GenerateFromString(input);
+            var res =new KeyGen().GenerateFromString(input);
 
             var hasAdr = res.Addresses.Contains("1CUuQXtKLY4XoEbHZ9BexWLZfN7wUHPuXC");
             Assert.AreEqual(true, hasAdr);
@@ -32,7 +32,7 @@ namespace TestsKeyGenerator {
         [Test]
         public void Test3adr() {
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
-            var res = KeyGen.GenerateFromString(input);
+            var res = new KeyGen().GenerateFromString(input);
 
             var hasAdr = res.Addresses.Contains("3KJq5p2MtPyV4i6yJRboxNkXCob197MiJj");
             Assert.AreEqual(true, hasAdr);
@@ -40,7 +40,7 @@ namespace TestsKeyGenerator {
         [Test]
         public void TestBCadr() {
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
-            var res = KeyGen.GenerateFromString(input);
+            var res = new KeyGen().GenerateFromString(input);
 
             var hasAdr = res.Addresses.Contains("bc1q0hc9c4jh39nz2tf8plsyfjsajthg4x4uza7u40");
             Assert.AreEqual(true, hasAdr);
