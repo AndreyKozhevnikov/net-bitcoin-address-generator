@@ -18,7 +18,9 @@ public class KeyGen {
 
         return GenerateFromBytes(hashValue);
     }
-
+    public KeyGen() {
+        Initialize();
+    }
     public void Initialize() {
         secp256k1 = new Secp256k1();
         mySHA256 = SHA256.Create();

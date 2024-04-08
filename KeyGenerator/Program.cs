@@ -19,9 +19,9 @@ namespace MyApp {
 
     public class Test {
         public void Test1() {
-            
+
             var r = new Random(DateTime.Now.Millisecond);
-            var k=new  KeyGen();
+            var k = new KeyGen();
             var watch = System.Diagnostics.Stopwatch.StartNew();
             for(int i = 0; i < 1000; i++) {
                 byte[] bytes = new byte[32];
@@ -38,11 +38,11 @@ namespace MyApp {
             Console.WriteLine(t.ToString());
         }
         public void Test2() {
-            
-           // var r = new Random(DateTime.Now.Millisecond);
+
+            // var r = new Random(DateTime.Now.Millisecond);
             var watch = System.Diagnostics.Stopwatch.StartNew();
             for(int i = 0; i < 10000; i++) {
-             //   var st = r.Next().ToString();
+                //   var st = r.Next().ToString();
                 Key privateKey = new Key(); // generate a random private key
                 PubKey publicKey = privateKey.PubKey;
                 var adr1 = publicKey.GetAddress(ScriptPubKeyType.Legacy, Network.Main);
@@ -65,9 +65,12 @@ namespace MyApp {
 
         public void Test3() {
             var t1 = new Thread(GenerateKeys);
-            var t2=new Thread(GenerateKeys);
+            t1.Name = "th1";
+            var t2 = new Thread(GenerateKeys);
+            t2.Name = "th2";
 
             t1.Start();
+            Thread.Sleep(2000);
             t2.Start();
         }
         void GenerateKeys() {
@@ -75,7 +78,7 @@ namespace MyApp {
             for(int i = 0; i < 1000; i++) {
                 var adrSet = k.GenerateFromString(i.ToString());
                 var val = adrSet.Addresses[1];
-                Debug.Print(val.ToString());
+                Debug.Print(Thread.CurrentThread.Name + " " + val.ToString());
             }
         }
     }
