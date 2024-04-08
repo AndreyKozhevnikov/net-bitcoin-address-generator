@@ -3,7 +3,7 @@
 using Secp256k1Net;
 using SimpleBase;
 using System.IO;
-
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,6 +17,25 @@ public class KeyGen {
         var st = BitConverter.ToString(hashValue);
 
         return GenerateFromBytes(hashValue);
+    }
+    public AddressSet GenerateFromBigInt(BigInteger value) {
+        byte[] intBytes = value.ToByteArray();
+        Array.Reverse(intBytes);
+        byte[] res = new byte[32];
+        var dest = 32 - intBytes.Length;
+        Array.Copy(intBytes, 0, res, dest, intBytes.Length);
+        return GenerateFromBytes(res);
+    }
+    public AddressSet GenerateFromInt(int value) {
+        byte[] intBytes = BitConverter.GetBytes(value);
+        Array.Reverse(intBytes);
+
+
+        byte[] res = new byte[32];
+        var dest = 32 - intBytes.Length;
+        Array.Copy(intBytes, 0, res, dest, intBytes.Length);
+        return GenerateFromBytes(res);
+
     }
     public KeyGen() {
         Initialize();
@@ -42,7 +61,7 @@ public class KeyGen {
         // Serialize the public key to compressed format
         var compressed_public_key = new byte[Secp256k1.SERIALIZED_COMPRESSED_PUBKEY_LENGTH];
         secp256k1.PublicKeySerialize(compressed_public_key, publicKey, Flags.SECP256K1_EC_COMPRESSED);
-       
+
         return compressed_public_key;
     }
 
@@ -82,7 +101,7 @@ public class KeyGen {
 
         var public_key_hash = "00" + public_key_hash_clean;
 
-       
+
         //1adr
 
         checkSum = GetCheckSum(public_key_hash);

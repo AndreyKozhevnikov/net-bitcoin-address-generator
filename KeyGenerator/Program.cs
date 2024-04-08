@@ -1,5 +1,6 @@
 ﻿using KeyGenNameSpace;
 using NBitcoin;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 
@@ -10,10 +11,16 @@ namespace MyApp {
 
             //var ts = KeyGen.GenerateFromString("cat");
             //var ts2 = KeyGen.GenerateFromString("test");
-
+            var tInt = int.Parse("5749F", System.Globalization.NumberStyles.HexNumber);
 
             var t1 = new Test();
-            t1.Test3();
+            // t1.Test4(11, "1PgQVLmst3Z314JrQn5TNiys8Hc38TcXJu");
+            // t1.Test4(17, "1HduPEXZRdG26SUT5Yk83mLkPyjnZuJ7Bm");
+            // t1.Test4(18, "1GnNTmTVLZiqQfLbAdp9DVdicEnB5GoERE");
+            //t1.Test4(19, "1NWmZRpHH4XSPwsW6dsS3nrNWfL1yrJj4w");
+
+
+            System.Numerics.BigInteger number65 = System.Numerics.BigInteger.Multiply(Int64.MaxValue, 2);
         }
     }
 
@@ -80,6 +87,34 @@ namespace MyApp {
                 var val = adrSet.Addresses[1];
                 Debug.Print(Thread.CurrentThread.Name + " " + val.ToString());
             }
+        }
+
+
+        public void Test4(int powMax, string target) {
+            var powMin = powMax - 1;
+            var min = Math.Pow(2, powMin);
+            var max = Math.Pow(2, powMax);
+            var len = max - min;
+            var k = new KeyGen();
+            int kk = 0;
+            for(int i = (int)max; i >= min; i--) {
+                kk++;
+                if(kk % 10000 == 0) {
+                    Console.Write("\r{0}/{1}", kk, len);
+                }
+                var adrSet = k.GenerateFromInt(i);
+                if(adrSet.Addresses.Contains(target)) {
+                    Console.WriteLine();
+                    Console.WriteLine("found");
+                    Console.WriteLine(adrSet.WIF);
+                    Console.WriteLine(i);
+                    var hx= i.ToString("X");
+                    Console.WriteLine(hx);
+                    Console.WriteLine();
+                    Console.ReadLine();
+                }
+            }
+            Console.WriteLine("finish");
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using KeyGenNameSpace;
+using Org.BouncyCastle.Math;
+using System.Numerics;
 namespace TestsKeyGenerator {
     [TestFixture]
     public class HashConverterTest {
@@ -45,12 +47,26 @@ namespace TestsKeyGenerator {
             var hasAdr = res.Addresses.Contains("bc1q0hc9c4jh39nz2tf8plsyfjsajthg4x4uza7u40");
             Assert.AreEqual(true, hasAdr);
         }
-        //[Test]
-        //public void Test2() {
-        //    var input = "11F53BE6DC18F1DD5DC9F111D83EB93F0F9B09BDA1812B000000000000000000";
-        //    var res = "test1";
-        //    Assert.AreEqual("test1", res);
+        [Test]
+        public void TestString() {
+            var input = "test";
+            var res = new KeyGen().GenerateFromString(input);
+            Assert.AreEqual("L2ZovMyTxxQVJmMtfQemgVcB5YmiEDapDwsvX6RqvuWibgUNRiHz", res.WIF);
 
-        //}
+        }
+        [Test]
+        public void TestInt() {
+            var res = new KeyGen().GenerateFromInt(1155);
+            Assert.AreEqual("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFUGxXgtm63M", res.WIF);
+        }
+        [Test]
+        public void TestBigInt() {
+            var val =  System.Numerics.BigInteger.Parse("30568377312064202855");
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GenerateFromBigInt(val);
+            Assert.AreEqual("18ZMbwUFLMHoZBbfpCjUJQTCMCbktshgpe", res.Addresses[0]);
+        }
+
+
     }
 }
