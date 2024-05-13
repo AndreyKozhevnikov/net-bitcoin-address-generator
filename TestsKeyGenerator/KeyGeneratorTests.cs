@@ -95,11 +95,15 @@ namespace TestsKeyGenerator {
         [Test]
         public void GetPublicKeyWithNative() {
             byte[] intBytes = BitConverter.GetBytes(3);
+
+          
             Array.Reverse(intBytes);
             byte[] privateKeyBytes = new byte[32];
             var dest = 32 - intBytes.Length;
             Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
+            //Array.Reverse(privateKeyBytes);
+            //var tst = BitConverter.ToInt32(privateKeyBytes, 0);
 
             //BigInteger number66 = BigInteger.Multiply(number65, 2);
             var res = new KeyGen().GetPublicKeyNative(privateKeyBytes);
