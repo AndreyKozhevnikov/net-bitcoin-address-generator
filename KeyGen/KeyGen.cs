@@ -29,8 +29,6 @@ public class KeyGen {
     public AddressSet GenerateFromInt(int value) {
         byte[] intBytes = BitConverter.GetBytes(value);
         Array.Reverse(intBytes);
-
-
         byte[] res = new byte[32];
         var dest = 32 - intBytes.Length;
         Array.Copy(intBytes, 0, res, dest, intBytes.Length);
@@ -64,7 +62,20 @@ public class KeyGen {
 
         return compressed_public_key;
     }
+    public byte[] GetPublicKeyNative(byte[] privateKey) {
+        //secp256k1.SecretKeyVerify(privateKey);
 
+        //// Derive public key bytes
+        //var publicKey = new byte[Secp256k1.PUBKEY_LENGTH];
+        //secp256k1.PublicKeyCreate(publicKey, privateKey);
+        //var publicKeySt = Convert.ToHexString(publicKey);
+
+        //// Serialize the public key to compressed format
+        var compressed_public_key = new byte[33];
+        //secp256k1.PublicKeySerialize(compressed_public_key, publicKey, Flags.SECP256K1_EC_COMPRESSED);
+
+        return compressed_public_key;
+    }
     public AddressSet GenerateFromBytes(byte[] bytes) {
 
         if(secp256k1 == null) {

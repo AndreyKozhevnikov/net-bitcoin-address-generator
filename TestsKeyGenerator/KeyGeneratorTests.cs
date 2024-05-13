@@ -2,6 +2,7 @@
 using KeyGenNameSpace;
 using Org.BouncyCastle.Math;
 using System.Numerics;
+using Newtonsoft.Json.Linq;
 namespace TestsKeyGenerator {
     [TestFixture]
     public class HashConverterTest {
@@ -60,6 +61,11 @@ namespace TestsKeyGenerator {
             Assert.AreEqual("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFUGxXgtm63M", res.WIF);
         }
         [Test]
+        public void TestInt3() {
+            var res = new KeyGen().GenerateFromInt(3);
+            Assert.AreEqual("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74sHUHy8S", res.WIF);
+        }
+        [Test]
         public void TestBigInt() {
             var val =  System.Numerics.BigInteger.Parse("30568377312064202855");
             //BigInteger number66 = BigInteger.Multiply(number65, 2);
@@ -67,6 +73,41 @@ namespace TestsKeyGenerator {
             Assert.AreEqual("18ZMbwUFLMHoZBbfpCjUJQTCMCbktshgpe", res.Addresses[0]);
         }
 
+
+        [Test]
+        public void GetPublicKeyWithsecp256k1() {
+            byte[] intBytes = BitConverter.GetBytes(3);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
+
+          
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
+        }
+
+
+        [Test]
+        public void GetPublicKeyWithNative() {
+            byte[] intBytes = BitConverter.GetBytes(3);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
+
+
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKeyNative(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
+        }
 
     }
 }

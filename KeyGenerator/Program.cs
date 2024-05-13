@@ -1,17 +1,50 @@
 ﻿using KeyGenNameSpace;
 using NBitcoin;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace MyApp {
     internal class Program {
         static void Main(string[] args) {
             Console.WriteLine("Hello World!");
+            var gen=new KeyGen();
 
-            //var ts = KeyGen.GenerateFromString("cat");
-            //var ts2 = KeyGen.GenerateFromString("test");
-            var tInt = int.Parse("5749F", System.Globalization.NumberStyles.HexNumber);
+
+
+            //var res = gen.GenerateFromString("test");
+
+            //var privKey = res.PrivateKey; //9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08
+            //var wif = res.WIF; //"L2ZovMyTxxQVJmMtfQemgVcB5YmiEDapDwsvX6RqvuWibgUNRiHz"
+            //var adr1 = res.Addresses[0]; //"19eA3hUfKRt7aZymavdQFXg5EZ6KCVKxr8"
+            //var adr3 = res.Addresses[1]; //"3PEaV1m4nGi3yTKnzzmqjFTkxzrcFpier5"
+            //var adrBc = res.Addresses[2]; //"bc1qtmrl9526rusw4dnavrcfal72tz6ram5lqzutru"
+
+            var b = 3;
+            //var r = new Random();
+            //byte[] intBytes = BitConverter.GetBytes(1301);
+
+            //var res = 1156 % 1000;
+            //var res2 = 564 % 1000;
+
+            ////var ts = KeyGen.GenerateFromString("cat");
+
+            //var tInt = int.Parse("5749F", System.Globalization.NumberStyles.HexNumber);
+            //BigInteger number65 = BigInteger.Multiply(Int64.MaxValue, 2);
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+
+            //var diff=number66- number65;
+
+            //var nn = number66.ToByteArray().Length;
+            //Random random = new Random();
+            //byte[] data = new byte[9];
+            //random.NextBytes(data);
+            //var cand= new BigInteger(data);
+
+            //var biRes = number65 + cand % diff;
+
 
             var t1 = new Test();
             // t1.Test4(11, "1PgQVLmst3Z314JrQn5TNiys8Hc38TcXJu");
@@ -19,8 +52,8 @@ namespace MyApp {
             // t1.Test4(18, "1GnNTmTVLZiqQfLbAdp9DVdicEnB5GoERE");
             //t1.Test4(19, "1NWmZRpHH4XSPwsW6dsS3nrNWfL1yrJj4w");
 
-
-            System.Numerics.BigInteger number65 = System.Numerics.BigInteger.Multiply(Int64.MaxValue, 2);
+            //  t1.TestBitInt(number65, number66, "13zb1hQbWVsc2S7ZTZnP2G4undNNpdh5so");
+            t1.Test6();
         }
     }
 
@@ -109,6 +142,49 @@ namespace MyApp {
                     Console.WriteLine(adrSet.WIF);
                     Console.WriteLine(i);
                     var hx= i.ToString("X");
+                    Console.WriteLine(hx);
+                    Console.WriteLine();
+                    Console.ReadLine();
+                }
+            }
+            Console.WriteLine("finish");
+        }
+
+        public void Test6() {
+            var r = new Random(DateTime.Now.Millisecond);
+            BigInteger number65 = BigInteger.Multiply(Int64.MaxValue, 2);
+            BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var diff = number66 - number65;
+            byte[] bytes = new byte[9];
+            while(true) {
+                r.NextBytes(bytes);
+                bytes[bytes.Length - 1] &= (byte)0x7F;
+                var cand = new BigInteger(bytes);
+
+                var biToCheck = number65 + cand % diff;
+                if(biToCheck > number66) {
+                    var t = 34;
+                }
+            }
+        }
+
+        public void TestBitInt(BigInteger min,BigInteger max, string target) {
+          
+            var len = max - min;
+            var k = new KeyGen();
+            int kk = 0;
+            for(BigInteger i = max; i >= min; i--) {
+                kk++;
+                if(kk % 10000 == 0) {
+                    Console.Write("\r{0}/{1}", kk, len);
+                }
+                var adrSet = k.GenerateFromBigInt(i);
+                if(adrSet.Addresses.Contains(target)) {
+                    Console.WriteLine();
+                    Console.WriteLine("found");
+                    Console.WriteLine(adrSet.WIF);
+                    Console.WriteLine(i);
+                    var hx = i.ToString("X");
                     Console.WriteLine(hx);
                     Console.WriteLine();
                     Console.ReadLine();
