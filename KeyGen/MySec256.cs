@@ -40,8 +40,8 @@ namespace KeyGenNameSpace {
         static BigInteger modInverse(BigInteger a, BigInteger n) {
             BigInteger i = n, v = 0, d = 1;
             while(a > 0) {
-                BigInteger t = BigInteger.Divide(i, a), x = a;
-                a = BigInteger.Remainder( i , x);
+                BigInteger t = i / a, x = a;
+                a = i % x;
                 i = x;
                 x = d;
                 d = v - t * x;
@@ -56,8 +56,7 @@ namespace KeyGenNameSpace {
             // # slope = (3x^2 + a) / 2y    a=0
 
             //   '/2y' part
-            var x3 = BigInteger.Multiply(3, BigInteger.Pow(point.Item1, 2)); //++
-            var x32 = 3* BigInteger.Pow(point.Item1, 2); //++
+            var x3 = 3 * BigInteger.Pow(point.Item1, 2); //++
 
             var y2 = BigInteger.Multiply(point.Item2, 2); //++
 
@@ -68,27 +67,6 @@ namespace KeyGenNameSpace {
             //91914383230618135761690975197207778399550061809281766160147273830617914855857
             var slope = r1 % primeModulus;
 
-            //var y22 = BigInteger.ModPow(y2, BigInteger.Subtract(primeModulus, 2), primeModulus);
-
-            //var y222 = BigInteger.Multiply(x3, y22);
-
-            ////var r1 = BigInteger.Divide(x3, y2);
-
-
-            ////91914383230618135761690975197207778399550061809281766160147273830617914855857
-            //var slope = BigInteger.ModPow(BigInteger.Parse("3"), BigInteger.Subtract(primeModulus, 2), primeModulus);
-
-            //var testSlope = BigInteger.ModPow(BigInteger.Parse("3"), BigInteger.Subtract(BigInteger.Parse("11"), 2), BigInteger.Parse("11"));
-
-
-
-            //var tst = BigInteger.ModPow(x3, y2, primeModulus);
-
-            // var secPart= BigInteger.ModPow(2, point.Item2, primeModulus);
-            //// BigInteger.mod
-
-            // var fPart =BigInteger.Multiply(3, BigInteger.Pow(point.Item1, 2));
-            // var slope = BigInteger.Multiply (fPart, secPart);
 
             return point;
         }
