@@ -41,7 +41,7 @@ namespace KeyGenNameSpace {
         //    var a_inverse = BigInteger.ModPow(a, n - 2, n);
         //    return a_inverse;
         //}
-        static BigInteger modInverse(BigInteger a, BigInteger n) {
+        public   static BigInteger modInverse(BigInteger a, BigInteger n) {
             BigInteger i = n, v = 0, d = 1;
             while(a > 0) {
                 BigInteger t = i / a, x = a;

@@ -3,6 +3,8 @@ using KeyGenNameSpace;
 using Org.BouncyCastle.Math;
 using System.Numerics;
 using Newtonsoft.Json.Linq;
+using BigInteger = System.Numerics.BigInteger;
+
 namespace TestsKeyGenerator {
     [TestFixture]
     public class HashConverterTest {
@@ -111,6 +113,17 @@ namespace TestsKeyGenerator {
 
 
             Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
+        }
+
+        [Test]
+        public void ModInverse() {
+            BigInteger input1 = BigInteger.Parse("65341020041517633956166170261014086368942546761318486551877808671514674964848");
+            BigInteger input2 = BigInteger.Parse("115792089237316195423570985008687907853269984665640564039457584007908834671663");
+            BigInteger target = BigInteger.Parse("83174505189910067536517124096019359197644205712500122884473429251812128958118");
+
+            var result = MySec256.modInverse(input1, input2);
+
+            Assert.AreEqual(target, result);
         }
 
     }
