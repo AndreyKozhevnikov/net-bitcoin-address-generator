@@ -126,5 +126,30 @@ namespace TestsKeyGenerator {
             Assert.AreEqual(target, result);
         }
 
+        [Test]
+        public void MyModulus() {
+            BigInteger input1 = BigInteger.Parse("756628490253123014067933708583503295844929075882239485540431356534910033618830501144105195285364489562157441837796863614070956636498456792910898817389940831543204657474297072356228690296487944931559885281889207062770782744748470400");
+            BigInteger input2 = BigInteger.Parse("115792089237316195423570985008687907853269984665640564039457584007908834671663");
+            BigInteger target = BigInteger.Parse("91914383230618135761690975197207778399550061809281766160147273830617914855857");
+
+            var result = MySec256.MyModulus(input1, input2);
+
+            Assert.AreEqual(target, result);
+        }
+        [Test]
+        public void Double() {
+            BigInteger input1 = BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240");
+            BigInteger input2 = BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424");
+            var point = new Tuple<BigInteger, BigInteger>(input1, input2);
+            BigInteger target1 = BigInteger.Parse("89565891926547004231252920425935692360644145829622209833684329913297188986597");
+            BigInteger target2 = BigInteger.Parse("12158399299693830322967808612713398636155367887041628176798871954788371653930");
+
+            var targetPoint= new Tuple<BigInteger, BigInteger>(target1, target2);
+            var result = MySec256.Double(point);
+
+            Assert.AreEqual(targetPoint, result);
+        }
+
+
     }
 }
