@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace KeyGenNameSpace {
     public class MySec256 {
+
+        static BigInteger primeModulus = BigInteger.Pow(2, 256) - BigInteger.Pow(2, 32) - BigInteger.Pow(2, 9) - BigInteger.Pow(2, 8) - BigInteger.Pow(2, 7) - BigInteger.Pow(2, 6) - BigInteger.Pow(2, 4) - 1;
         public static byte[] GetPublicKeyNative(byte[] privateKey) {
 
             //115792089237316195423570985008687907853269984665640564039457584007908834671663
@@ -52,7 +56,7 @@ namespace KeyGenNameSpace {
             return v;
         }
         static Tuple<BigInteger, BigInteger> Double(Tuple<BigInteger, BigInteger> point) {
-            var primeModulus = BigInteger.Pow(2, 256) - BigInteger.Pow(2, 32) - BigInteger.Pow(2, 9) - BigInteger.Pow(2, 8) - BigInteger.Pow(2, 7) - BigInteger.Pow(2, 6) - BigInteger.Pow(2, 4) - 1;
+            
             // # slope = (3x^2 + a) / 2y    a=0
 
             //   '/2y' part
@@ -72,9 +76,9 @@ namespace KeyGenNameSpace {
             BigInteger yT0 = (slope * (point.Item1 - x) - point.Item2);
             BigInteger yT1;
             if(yT0 >= 0) {
-                 yT1 = (yT0 / primeModulus); 
-            } else { 
-                 yT1 = (yT0 / primeModulus) - 1; //dirty hack. need to rewrite and/or check
+                yT1 = (yT0 / primeModulus);
+            } else {
+                yT1 = (yT0 / primeModulus) - 1; //dirty hack. need to rewrite and/or check
             }
 
             //12158399299693830322967808612713398636155367887041628176798871954788371653930
@@ -85,7 +89,37 @@ namespace KeyGenNameSpace {
             //var test2 = 3;
             //var test3 = test1 % test2;
 
-            return new Tuple<BigInteger,BigInteger>(x,y);
+            return new Tuple<BigInteger, BigInteger>(x, y);
+        }
+        static Tuple<BigInteger, BigInteger> Add(Tuple<BigInteger, BigInteger> point1, Tuple<BigInteger, BigInteger> point2) {
+
+            if(point1 == point2) {
+                return Double(point1);
+            }
+
+            //# slope = (y1 - y2) / (x1 - x2)
+            //23578750110654438173404407907450265080473019639451825850605815020978465167024
+            //  slope = ((point1[:y] - point2[:y]) * modinv(point1[:x] - point2[:x])) % $p
+            var diffX = point1.Item1 - point2.Item1;
+            var diffXMod=modInverse(diffX, primeModulus); //wrong
+            var diffY=point1.Item2 - point2.Item2;
+            var sum=diffY*diffXMod;
+            var sum2 = diffY / diffX;
+
+            BigInteger slope1;
+            if(sum >= 0) {
+                slope1 = (sum / primeModulus);
+            } else {
+                slope1 = (sum / primeModulus) - 1; //dirty hack. need to rewrite and/or check
+            }
+
+            //12158399299693830322967808612713398636155367887041628176798871954788371653930
+            BigInteger slope = sum - primeModulus * slope1;
+
+
+          //  var slope = sum % primeModulus;
+
+            return new Tuple<BigInteger, BigInteger>(0, 0);
         }
 
 
@@ -120,6 +154,12 @@ namespace KeyGenNameSpace {
             for(int j = 1; j < binary.Length; j++) {
                 //# 0 = double
                 current = Double(current);
+
+
+                if(binary[i]) {
+                    current = Add(current, point);
+                }
+
             }
 
             return current;
