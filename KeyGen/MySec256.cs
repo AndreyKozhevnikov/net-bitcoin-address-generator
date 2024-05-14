@@ -66,9 +66,26 @@ namespace KeyGenNameSpace {
             var r1 = x3 * y2mod;
             //91914383230618135761690975197207778399550061809281766160147273830617914855857
             var slope = r1 % primeModulus;
+            //# new x = slope^2 - 2x
+            BigInteger x = (BigInteger.Pow(slope, 2) - (2 * point.Item1)) % primeModulus;
 
+            BigInteger yT0 = (slope * (point.Item1 - x) - point.Item2);
+            BigInteger yT1;
+            if(yT0 >= 0) {
+                 yT1 = (yT0 / primeModulus); 
+            } else { 
+                 yT1 = (yT0 / primeModulus) - 1; //dirty hack. need to rewrite and/or check
+            }
 
-            return point;
+            //12158399299693830322967808612713398636155367887041628176798871954788371653930
+            BigInteger y = yT0 - primeModulus * yT1;
+            //BigInteger yT2 = BigInteger.ModPow(y, primeModulus - 2, primeModulus);
+
+            //var test1 = -5;
+            //var test2 = 3;
+            //var test3 = test1 % test2;
+
+            return new Tuple<BigInteger,BigInteger>(x,y);
         }
 
 
