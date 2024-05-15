@@ -149,7 +149,22 @@ namespace TestsKeyGenerator {
 
             Assert.AreEqual(targetPoint, result);
         }
+        [Test]
+        public void Add() {
+            BigInteger input1 = BigInteger.Parse("89565891926547004231252920425935692360644145829622209833684329913297188986597");
+            BigInteger input11 = BigInteger.Parse("12158399299693830322967808612713398636155367887041628176798871954788371653930");
+            BigInteger input2 = BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240");
+            BigInteger input21 = BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424");
+            var point1 = new Tuple<BigInteger, BigInteger>(input1, input11);
+            var point2= new Tuple<BigInteger, BigInteger>(input2, input21);
+            BigInteger target1 = BigInteger.Parse("112711660439710606056748659173929673102114977341539408544630613555209775888121");
+            BigInteger target2 = BigInteger.Parse("25583027980570883691656905877401976406448868254816295069919888960541586679410");
 
+            var targetPoint = new Tuple<BigInteger, BigInteger>(target1, target2);
+            var result = MySec256.Add(point1,point2);
+
+            Assert.AreEqual(targetPoint, result);
+        }
 
     }
 }

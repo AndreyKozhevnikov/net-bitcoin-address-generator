@@ -37,12 +37,12 @@ namespace KeyGenNameSpace {
             return compressed_public_key;
         }
 
-      
+
         public static BigInteger modInverse(BigInteger a, BigInteger n) {
             BigInteger i = n, v = 0, d = 1;
             while(a > 0) {
                 BigInteger t = i / a, x = a;
-                a = MyModulus( i , x);
+                a = MyModulus(i, x);
                 i = x;
                 x = d;
                 d = v - t * x;
@@ -58,8 +58,7 @@ namespace KeyGenNameSpace {
             BigInteger n;
             if(k >= 0) {
                 n = (k / m);
-            }
-            else {
+            } else {
                 n = (k / m) - 1; //dirty hack. need to rewrite and/or check
             }
             BigInteger y = k - m * n;
@@ -90,7 +89,7 @@ namespace KeyGenNameSpace {
 
             return new Tuple<BigInteger, BigInteger>(x, y);
         }
-        static Tuple<BigInteger, BigInteger> Add(Tuple<BigInteger, BigInteger> point1, Tuple<BigInteger, BigInteger> point2) {
+        public static Tuple<BigInteger, BigInteger> Add(Tuple<BigInteger, BigInteger> point1, Tuple<BigInteger, BigInteger> point2) {
 
             if(point1 == point2) {
                 return Double(point1);
@@ -103,7 +102,7 @@ namespace KeyGenNameSpace {
             var diffXMod = modInverse(diffX, primeModulus); //wrong
             var diffY = point1.Item2 - point2.Item2;
             var sum = diffY * diffXMod;
-            
+
 
             //BigInteger slope1;
             //if(sum >= 0) {
@@ -116,10 +115,18 @@ namespace KeyGenNameSpace {
             //23578750110654438173404407907450265080473019639451825850605815020978465167024
             BigInteger slope = MyModulus(sum, primeModulus);
 
+            //112711660439710606056748659173929673102114977341539408544630613555209775888121
+            //# new x = slope^2 - x1 - x2
+            BigInteger x = MyModulus((BigInteger.Pow(slope, 2) - point1.Item1 - point2.Item1), primeModulus);
+
+
+            // # new y = slope * (x1 - new x) - y1
+            //25583027980570883691656905877401976406448868254816295069919888960541586679410
+            BigInteger y = MyModulus(((slope * (point1.Item1 - x)) - point1.Item2), primeModulus);
 
             //  var slope = sum % primeModulus;
 
-            return new Tuple<BigInteger, BigInteger>(0, 0);
+            return new Tuple<BigInteger, BigInteger>(x, y);
         }
 
 
@@ -131,7 +138,7 @@ namespace KeyGenNameSpace {
 
             var testm2 = BigInteger.ModPow(9, 13, 47);
 
-                //testzone
+            //testzone
 
             var current = point;
 
