@@ -103,7 +103,7 @@ namespace KeyGenNameSpace {
             var diffXMod = modInverse(diffX, primeModulus); //wrong
             var diffY = point1.Item2 - point2.Item2;
             var sum = diffY * diffXMod;
-            var sum2 = diffY / diffX;
+            
 
             //BigInteger slope1;
             //if(sum >= 0) {
@@ -113,7 +113,7 @@ namespace KeyGenNameSpace {
             //    slope1 = (sum / primeModulus) - 1; //dirty hack. need to rewrite and/or check
             //}
 
-            //12158399299693830322967808612713398636155367887041628176798871954788371653930
+            //23578750110654438173404407907450265080473019639451825850605815020978465167024
             BigInteger slope = MyModulus(sum, primeModulus);
 
 
@@ -124,6 +124,14 @@ namespace KeyGenNameSpace {
 
 
         static Tuple<BigInteger, BigInteger> Multiply(BigInteger k, Tuple<BigInteger, BigInteger> point) {
+
+            //testzone
+
+            var testM = modInverse(13, 47);
+
+            var testm2 = BigInteger.ModPow(9, 13, 47);
+
+                //testzone
 
             var current = point;
 
