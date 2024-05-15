@@ -93,6 +93,22 @@ namespace TestsKeyGenerator {
             Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
         }
 
+        [Test]
+        public void GetPublicKeyWithsecp256k1_2() {
+            byte[] intBytes = BitConverter.GetBytes(3464879846);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
+
+
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("0222c6cde840c26dab252ce847e81bfa3fe7fa59c5cfb5879337a0e6117205837b", compressed_public_key_st);
+        }
 
         [Test]
         public void GetPublicKeyWithNative() {
@@ -113,6 +129,27 @@ namespace TestsKeyGenerator {
 
 
             Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
+        }
+
+        [Test]
+        public void GetPublicKeyWithNative_2() {
+            byte[] intBytes = BitConverter.GetBytes(3464879846);
+
+
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
+
+            //Array.Reverse(privateKeyBytes);
+            //var tst = BitConverter.ToInt32(privateKeyBytes, 0);
+
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKeyNative(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("0222c6cde840c26dab252ce847e81bfa3fe7fa59c5cfb5879337a0e6117205837b", compressed_public_key_st);
         }
 
         [Test]

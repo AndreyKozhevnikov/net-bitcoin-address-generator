@@ -23,6 +23,22 @@ namespace KeyGenNameSpace {
             Array.Reverse(privateKey);
             var k = new BigInteger(privateKey);
             var point = Multiply(k, G);
+
+            var xArr = point.Item1.ToByteArray();
+            var compressed_public_key = new byte[33];
+            if(point.Item2 % 2 == 0) {
+                compressed_public_key[32] = 0x02;
+               // hexX = "02" + hexX;
+            }
+            else {
+                compressed_public_key[32] = 0x03;
+                // hexX = "03" + hexX;
+            }
+            Array.Copy(xArr,compressed_public_key,32);
+            Array.Reverse(compressed_public_key);
+
+
+            //var hexX = Convert.ToHexString(compressed_public_key);
             //secp256k1.SecretKeyVerify(privateKey);
 
             //// Derive public key bytes
@@ -31,7 +47,7 @@ namespace KeyGenNameSpace {
             //var publicKeySt = Convert.ToHexString(publicKey);
 
             //// Serialize the public key to compressed format
-            var compressed_public_key = new byte[33];
+            
             //secp256k1.PublicKeySerialize(compressed_public_key, publicKey, Flags.SECP256K1_EC_COMPRESSED);
 
             return compressed_public_key;
