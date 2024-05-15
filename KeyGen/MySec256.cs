@@ -130,7 +130,7 @@ namespace KeyGenNameSpace {
         }
 
 
-        static Tuple<BigInteger, BigInteger> Multiply(BigInteger k, Tuple<BigInteger, BigInteger> point) {
+      public  static Tuple<BigInteger, BigInteger> Multiply(BigInteger k, Tuple<BigInteger, BigInteger> point) {
 
             //testzone
 
@@ -142,7 +142,7 @@ namespace KeyGenNameSpace {
 
             var current = point;
 
-            k = BigInteger.Parse("11");
+            //k = BigInteger.Parse("11");
 
             var bt = k.ToByteArray();
             BitArray bitArray = new BitArray(bt);
@@ -171,7 +171,7 @@ namespace KeyGenNameSpace {
                 current = Double(current);
 
 
-                if(binary[i]) {
+                if(binary[j]) {
                     current = Add(current, point);
                 }
 

@@ -165,6 +165,30 @@ namespace TestsKeyGenerator {
 
             Assert.AreEqual(targetPoint, result);
         }
+        [Test]
+        public void Multiply() {
+            BigInteger input1 = BigInteger.Parse("3");
+            var point1 = new Tuple<BigInteger, BigInteger>(BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240"), BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424"));
+            BigInteger target1 = BigInteger.Parse("112711660439710606056748659173929673102114977341539408544630613555209775888121");
+            BigInteger target2 = BigInteger.Parse("25583027980570883691656905877401976406448868254816295069919888960541586679410");
 
+            var targetPoint = new Tuple<BigInteger, BigInteger>(target1, target2);
+            var result = MySec256.Multiply(input1, point1);
+
+            Assert.AreEqual(targetPoint, result);
+        }
+
+        [Test]
+        public void Multiply2() {
+            BigInteger input1 = BigInteger.Parse("11");
+            var point1 = new Tuple<BigInteger, BigInteger>(BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240"), BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424"));
+            BigInteger target1 = BigInteger.Parse("53957576663012291606402345341061437133522758407718089353314528343643821967563");
+            BigInteger target2 = BigInteger.Parse("98386217607324929854432842186271083758341411730506808463586570492533445740059");
+
+            var targetPoint = new Tuple<BigInteger, BigInteger>(target1, target2);
+            var result = MySec256.Multiply(input1, point1);
+
+            Assert.AreEqual(targetPoint, result);
+        }
     }
 }
