@@ -64,7 +64,7 @@ public class KeyGen {
         return compressed_public_key;
     }
     public byte[] GetPublicKeyNative(byte[] privateKey) {
-        return MySec256.GetPublicKeyNative(privateKey);
+        return plainSec256k1.Sec256Calculator.GetPublicKeyNative(privateKey);
     }
 
 
