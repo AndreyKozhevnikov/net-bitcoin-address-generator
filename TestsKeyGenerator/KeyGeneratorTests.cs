@@ -205,10 +205,10 @@ namespace TestsKeyGenerator {
 
             Assert.AreEqual("039840c46ab73fd610a0ebaedc791f37dc2101e1ebe12d65c98b1c6f79c25af68e", compressed_public_key_st);
         }
-     
+
 
         [Test]
-       // [Ignore("heavy")]
+        [Ignore("heavy")]
         public void HeavyTestComparison() {
             var r = new Random(DateTime.Now.Millisecond);
             var keyGen = new KeyGen();
@@ -221,8 +221,58 @@ namespace TestsKeyGenerator {
                 var libResult = keyGen.GetPublicKey(privateKeyBytes);
                 var nativeResult = keyGen.GetPublicKeyNative(privateKeyBytes);
 
-                Assert.AreEqual(libResult, nativeResult, hexPrivate+"-"+i, null);
+                Assert.AreEqual(libResult, nativeResult, hexPrivate + "-" + i, null);
             }
+        }
+
+
+        [Test]
+        [Ignore("heavy")]
+        public void PefromanceWrapperSec256() {
+            var r = new Random(DateTime.Now.Millisecond);
+            var keyGen = new KeyGen();
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            for(int i = 0; i < 10000; i++) {
+
+                if(i == 1000) {
+                    watch.Restart();
+                }
+                byte[] privateKeyBytes = new byte[32];
+                r.NextBytes(privateKeyBytes);
+
+                // var hexPrivate = Convert.ToHexString(privateKeyBytes);
+
+                var libResult = keyGen.GetPublicKey(privateKeyBytes);
+                //var nativeResult = keyGen.GetPublicKeyNative(privateKeyBytes);
+
+
+            }
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Assert.Less(10, elapsedMs);
+        }
+        [Test]
+        [Ignore("heavy")]
+        public void PefromanceNativeSec256() {
+            var r = new Random(DateTime.Now.Millisecond);
+            var keyGen = new KeyGen();
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            for(int i = 0; i < 10000; i++) {
+
+                if(i == 1000) {
+                    watch.Restart();
+                }
+                byte[] privateKeyBytes = new byte[32];
+                r.NextBytes(privateKeyBytes);
+
+                // var hexPrivate = Convert.ToHexString(privateKeyBytes);
+
+                //var libResult = keyGen.GetPublicKey(privateKeyBytes);
+                var nativeResult = keyGen.GetPublicKeyNative(privateKeyBytes);
+
+
+            }
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Assert.Less(10, elapsedMs);
         }
         [Test]
         public void PlaingTestComparison() {
@@ -239,8 +289,8 @@ namespace TestsKeyGenerator {
             var libResult = keyGen.GetPublicKey(privateKeyBytes);
             var nativeResult = keyGen.GetPublicKeyNative(privateKeyBytes);
 
-            var libResultHex=Convert.ToHexString(libResult);
-            var nativeResultHex=Convert.ToHexString(nativeResult);
+            var libResultHex = Convert.ToHexString(libResult);
+            var nativeResultHex = Convert.ToHexString(nativeResult);
             //025E75559CC1A98348FA5F6009843891FC4B83C74EACB727CC35B092D99B31738E
             Assert.AreEqual(libResultHex, nativeResultHex, hexPrivate, null);
             //}
