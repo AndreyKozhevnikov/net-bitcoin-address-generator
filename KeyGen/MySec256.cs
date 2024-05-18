@@ -20,21 +20,46 @@ namespace KeyGenNameSpace {
             // generator point (the starting point on the curve used for all calculations)
             Tuple<BigInteger, BigInteger> G = new Tuple<BigInteger, BigInteger>(BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240"), BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424"));
 
+            var tst = BigInteger.Parse("115567090620562097161227597211005235737308125546702379141105501484530475503851");
+
+            var tstBt = tst.ToByteArray();
+            var tstBtHx = Convert.ToHexString(tstBt);
+
+            //Array.Reverse(tstBt);
+            var tstBtHx2 = Convert.ToHexString(tstBt);
+
+            var tst2 = new BigInteger(tstBt);
+
+
+            var privHx = Convert.ToHexString(privateKey);
+
+
             Array.Reverse(privateKey);
-            var k = new BigInteger(privateKey);
+            var privHx2 = Convert.ToHexString(privateKey);
+
+            var newPrivateKey = new byte[33];
+            newPrivateKey[32] = 0x0;
+            // Array.Reverse(privateKey);
+            Array.Copy(privateKey, 0, newPrivateKey, 0, 32);
+
+            var newK = new BigInteger(newPrivateKey);
+
+            var k = new BigInteger(newPrivateKey);
             var point = Multiply(k, G);
 
             var xArr = point.Item1.ToByteArray();
+            //if(xArr.Length < 32) {
+            //    return null;
+            //}
             var compressed_public_key = new byte[33];
             if(point.Item2 % 2 == 0) {
                 compressed_public_key[32] = 0x02;
-               // hexX = "02" + hexX;
-            }
-            else {
+                // hexX = "02" + hexX;
+            } else {
                 compressed_public_key[32] = 0x03;
                 // hexX = "03" + hexX;
             }
-            Array.Copy(xArr,compressed_public_key,32);
+            Array.Copy(xArr, compressed_public_key, Math.Min(32, xArr.Length));
             Array.Reverse(compressed_public_key);
 
 
@@ -47,7 +72,7 @@ namespace KeyGenNameSpace {
             //var publicKeySt = Convert.ToHexString(publicKey);
 
             //// Serialize the public key to compressed format
-            
+
             //secp256k1.PublicKeySerialize(compressed_public_key, publicKey, Flags.SECP256K1_EC_COMPRESSED);
 
             return compressed_public_key;
@@ -56,6 +81,10 @@ namespace KeyGenNameSpace {
 
         public static BigInteger modInverse(BigInteger a, BigInteger n) {
             BigInteger i = n, v = 0, d = 1;
+            if(a < 0) {
+                a = MyModulus(a, n);
+            }
+
             while(a > 0) {
                 BigInteger t = i / a, x = a;
                 a = MyModulus(i, x);
@@ -64,8 +93,8 @@ namespace KeyGenNameSpace {
                 d = v - t * x;
                 v = x;
             }
-            v %= n;
-            if(v < 0) v = (v + n) % n;
+            v = MyModulus(v, n);
+            if(v < 0) v = MyModulus((v + n), n);
             return v;
         }
 
@@ -112,32 +141,19 @@ namespace KeyGenNameSpace {
             }
 
             //# slope = (y1 - y2) / (x1 - x2)
-            //23578750110654438173404407907450265080473019639451825850605815020978465167024
             //  slope = ((point1[:y] - point2[:y]) * modinv(point1[:x] - point2[:x])) % $p
-            var diffX = point1.Item1 - point2.Item1;
-            var diffXMod = modInverse(diffX, primeModulus); //wrong
-            var diffY = point1.Item2 - point2.Item2;
-            var sum = diffY * diffXMod;
+            var diffX = point1.Item1 - point2.Item1; //+
+            var diffXMod = modInverse(diffX, primeModulus); //-
+            var diffY = point1.Item2 - point2.Item2; //+
+            var sum = diffY * diffXMod; //-
 
-
-            //BigInteger slope1;
-            //if(sum >= 0) {
-            //    slope1 = (sum / primeModulus);
-            //}
-            //else {
-            //    slope1 = (sum / primeModulus) - 1; //dirty hack. need to rewrite and/or check
-            //}
-
-            //23578750110654438173404407907450265080473019639451825850605815020978465167024
             BigInteger slope = MyModulus(sum, primeModulus);
 
-            //112711660439710606056748659173929673102114977341539408544630613555209775888121
             //# new x = slope^2 - x1 - x2
             BigInteger x = MyModulus((BigInteger.Pow(slope, 2) - point1.Item1 - point2.Item1), primeModulus);
 
 
             // # new y = slope * (x1 - new x) - y1
-            //25583027980570883691656905877401976406448868254816295069919888960541586679410
             BigInteger y = MyModulus(((slope * (point1.Item1 - x)) - point1.Item2), primeModulus);
 
             //  var slope = sum % primeModulus;
@@ -146,7 +162,7 @@ namespace KeyGenNameSpace {
         }
 
 
-      public  static Tuple<BigInteger, BigInteger> Multiply(BigInteger k, Tuple<BigInteger, BigInteger> point) {
+        public static Tuple<BigInteger, BigInteger> Multiply(BigInteger k, Tuple<BigInteger, BigInteger> point) {
 
             //testzone
 
@@ -182,6 +198,28 @@ namespace KeyGenNameSpace {
             // ignore first binary character  https://learnmeabitcoin.com/technical/cryptography/elliptic-curve/#multiply
 
             //# double and add algorithm for fast multiplication
+            //int m = 0;
+            //using(StreamWriter outputFile = new StreamWriter(Path.Combine("test.txt"))) {
+            //    outputFile.WriteLine(k);
+            //    outputFile.WriteLine(binary);
+            //    for(int j = 1; j < binary.Length; j++) {
+            //        outputFile.WriteLine("step " + m++);
+            //        //# 0 = double
+            //        current = Double(current);
+            //        outputFile.WriteLine("after double");
+            //        outputFile.WriteLine(current.Item1);
+            //        outputFile.WriteLine(current.Item2);
+
+
+            //        if(binary[j]) {
+            //            current = Add(current, point);
+            //        }
+            //        outputFile.WriteLine("after add");
+            //        outputFile.WriteLine(current.Item1);
+            //        outputFile.WriteLine(current.Item2);
+            //    }
+            //}
+
             for(int j = 1; j < binary.Length; j++) {
                 //# 0 = double
                 current = Double(current);
@@ -190,7 +228,6 @@ namespace KeyGenNameSpace {
                 if(binary[j]) {
                     current = Add(current, point);
                 }
-
             }
 
             return current;

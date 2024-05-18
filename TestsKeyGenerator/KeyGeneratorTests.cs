@@ -10,12 +10,12 @@ namespace TestsKeyGenerator {
     public class HashConverterTest {
         [Test]
         public void TestPriv() {
-         
+
 
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
             var res = new KeyGen().GenerateFromString(input);
             Assert.AreEqual("9DDB55473EFFB85D2AF6E24B99ADE223A4E6F932D4933BDD4722B692B744CD23", res.PrivateKey);
-            
+
 
         }
         [Test]
@@ -29,7 +29,7 @@ namespace TestsKeyGenerator {
         [Test]
         public void Test1adr() {
             var input = "enter credit long demand tortoise harsh frame path rifle news then trigger";
-            var res =new KeyGen().GenerateFromString(input);
+            var res = new KeyGen().GenerateFromString(input);
 
             var hasAdr = res.Addresses.Contains("1CUuQXtKLY4XoEbHZ9BexWLZfN7wUHPuXC");
             Assert.AreEqual(true, hasAdr);
@@ -69,7 +69,7 @@ namespace TestsKeyGenerator {
         }
         [Test]
         public void TestBigInt() {
-            var val =  System.Numerics.BigInteger.Parse("30568377312064202855");
+            var val = System.Numerics.BigInteger.Parse("30568377312064202855");
             //BigInteger number66 = BigInteger.Multiply(number65, 2);
             var res = new KeyGen().GenerateFromBigInt(val);
             Assert.AreEqual("18ZMbwUFLMHoZBbfpCjUJQTCMCbktshgpe", res.Addresses[0]);
@@ -84,7 +84,7 @@ namespace TestsKeyGenerator {
             var dest = 32 - intBytes.Length;
             Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
-          
+
             //BigInteger number66 = BigInteger.Multiply(number65, 2);
             var res = new KeyGen().GetPublicKey(privateKeyBytes);
             var compressed_public_key_st = Convert.ToHexString(res).ToLower();
@@ -92,7 +92,22 @@ namespace TestsKeyGenerator {
 
             Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
         }
+        [Test]
+        public void GetPublicKeyWithsecp256k1_1() {
+            byte[] intBytes = BitConverter.GetBytes(11);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
+
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("03774ae7f858a9411e5ef4246b70c65aac5649980be5c17891bbec17895da008cb", compressed_public_key_st);
+        }
         [Test]
         public void GetPublicKeyWithsecp256k1_2() {
             byte[] intBytes = BitConverter.GetBytes(3464879846);
@@ -109,123 +124,126 @@ namespace TestsKeyGenerator {
 
             Assert.AreEqual("0222c6cde840c26dab252ce847e81bfa3fe7fa59c5cfb5879337a0e6117205837b", compressed_public_key_st);
         }
-
         [Test]
-        public void GetPublicKeyWithNative() {
-            byte[] intBytes = BitConverter.GetBytes(3);
-
-          
+        public void GetPublicKeyWithsecp256k1_3() {
+            byte[] intBytes = BitConverter.GetBytes(1234);
             Array.Reverse(intBytes);
             byte[] privateKeyBytes = new byte[32];
             var dest = 32 - intBytes.Length;
             Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
-            //Array.Reverse(privateKeyBytes);
-            //var tst = BitConverter.ToInt32(privateKeyBytes, 0);
 
             //BigInteger number66 = BigInteger.Multiply(number65, 2);
-            var res = new KeyGen().GetPublicKeyNative(privateKeyBytes);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
             var compressed_public_key_st = Convert.ToHexString(res).ToLower();
 
 
-            Assert.AreEqual("02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9", compressed_public_key_st);
+            Assert.AreEqual("02e37648435c60dcd181b3d41d50857ba5b5abebe279429aa76558f6653f1658f2", compressed_public_key_st);
         }
-
         [Test]
-        public void GetPublicKeyWithNative_2() {
-            byte[] intBytes = BitConverter.GetBytes(3464879846);
-
-
+        public void GetPublicKeyWithsecp256k1_4() {
+            byte[] intBytes = BitConverter.GetBytes(235);
             Array.Reverse(intBytes);
             byte[] privateKeyBytes = new byte[32];
             var dest = 32 - intBytes.Length;
             Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
-            //Array.Reverse(privateKeyBytes);
-            //var tst = BitConverter.ToInt32(privateKeyBytes, 0);
 
             //BigInteger number66 = BigInteger.Multiply(number65, 2);
-            var res = new KeyGen().GetPublicKeyNative(privateKeyBytes);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
             var compressed_public_key_st = Convert.ToHexString(res).ToLower();
 
 
-            Assert.AreEqual("0222c6cde840c26dab252ce847e81bfa3fe7fa59c5cfb5879337a0e6117205837b", compressed_public_key_st);
+            Assert.AreEqual("02d5e9e1da649d97d89e4868117a465a3a4f8a18de57a140d36b3f2af341a21b52", compressed_public_key_st);
+        }
+        [Test]
+        public void GetPublicKeyWithsecp256k1_5() {
+            byte[] intBytes = BitConverter.GetBytes(56);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
+
+
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("02bce74de6d5f98dc027740c2bbff05b6aafe5fd8d103f827e48894a2bd3460117", compressed_public_key_st);
         }
 
         [Test]
-        public void ModInverse() {
-            BigInteger input1 = BigInteger.Parse("65341020041517633956166170261014086368942546761318486551877808671514674964848");
-            BigInteger input2 = BigInteger.Parse("115792089237316195423570985008687907853269984665640564039457584007908834671663");
-            BigInteger target = BigInteger.Parse("83174505189910067536517124096019359197644205712500122884473429251812128958118");
+        public void GetPublicKeyWithsecp256k1_6() {
+            byte[] intBytes = BitConverter.GetBytes(123);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
-            var result = MySec256.modInverse(input1, input2);
 
-            Assert.AreEqual(target, result);
-        }
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
 
-        [Test]
-        public void MyModulus() {
-            BigInteger input1 = BigInteger.Parse("756628490253123014067933708583503295844929075882239485540431356534910033618830501144105195285364489562157441837796863614070956636498456792910898817389940831543204657474297072356228690296487944931559885281889207062770782744748470400");
-            BigInteger input2 = BigInteger.Parse("115792089237316195423570985008687907853269984665640564039457584007908834671663");
-            BigInteger target = BigInteger.Parse("91914383230618135761690975197207778399550061809281766160147273830617914855857");
 
-            var result = MySec256.MyModulus(input1, input2);
-
-            Assert.AreEqual(target, result);
+            Assert.AreEqual("03a598a8030da6d86c6bc7f2f5144ea549d28211ea58faa70ebf4c1e665c1fe9b5", compressed_public_key_st);
         }
         [Test]
-        public void Double() {
-            BigInteger input1 = BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240");
-            BigInteger input2 = BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424");
-            var point = new Tuple<BigInteger, BigInteger>(input1, input2);
-            BigInteger target1 = BigInteger.Parse("89565891926547004231252920425935692360644145829622209833684329913297188986597");
-            BigInteger target2 = BigInteger.Parse("12158399299693830322967808612713398636155367887041628176798871954788371653930");
+        public void GetPublicKeyWithsecp256k1_7() {
+            byte[] intBytes = BitConverter.GetBytes(2125123);
+            Array.Reverse(intBytes);
+            byte[] privateKeyBytes = new byte[32];
+            var dest = 32 - intBytes.Length;
+            Array.Copy(intBytes, 0, privateKeyBytes, dest, intBytes.Length);
 
-            var targetPoint= new Tuple<BigInteger, BigInteger>(target1, target2);
-            var result = MySec256.Double(point);
 
-            Assert.AreEqual(targetPoint, result);
+            //BigInteger number66 = BigInteger.Multiply(number65, 2);
+            var res = new KeyGen().GetPublicKey(privateKeyBytes);
+            var compressed_public_key_st = Convert.ToHexString(res).ToLower();
+
+
+            Assert.AreEqual("039840c46ab73fd610a0ebaedc791f37dc2101e1ebe12d65c98b1c6f79c25af68e", compressed_public_key_st);
         }
-        [Test]
-        public void Add() {
-            BigInteger input1 = BigInteger.Parse("89565891926547004231252920425935692360644145829622209833684329913297188986597");
-            BigInteger input11 = BigInteger.Parse("12158399299693830322967808612713398636155367887041628176798871954788371653930");
-            BigInteger input2 = BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240");
-            BigInteger input21 = BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424");
-            var point1 = new Tuple<BigInteger, BigInteger>(input1, input11);
-            var point2= new Tuple<BigInteger, BigInteger>(input2, input21);
-            BigInteger target1 = BigInteger.Parse("112711660439710606056748659173929673102114977341539408544630613555209775888121");
-            BigInteger target2 = BigInteger.Parse("25583027980570883691656905877401976406448868254816295069919888960541586679410");
-
-            var targetPoint = new Tuple<BigInteger, BigInteger>(target1, target2);
-            var result = MySec256.Add(point1,point2);
-
-            Assert.AreEqual(targetPoint, result);
-        }
-        [Test]
-        public void Multiply() {
-            BigInteger input1 = BigInteger.Parse("3");
-            var point1 = new Tuple<BigInteger, BigInteger>(BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240"), BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424"));
-            BigInteger target1 = BigInteger.Parse("112711660439710606056748659173929673102114977341539408544630613555209775888121");
-            BigInteger target2 = BigInteger.Parse("25583027980570883691656905877401976406448868254816295069919888960541586679410");
-
-            var targetPoint = new Tuple<BigInteger, BigInteger>(target1, target2);
-            var result = MySec256.Multiply(input1, point1);
-
-            Assert.AreEqual(targetPoint, result);
-        }
+     
 
         [Test]
-        public void Multiply2() {
-            BigInteger input1 = BigInteger.Parse("11");
-            var point1 = new Tuple<BigInteger, BigInteger>(BigInteger.Parse("55066263022277343669578718895168534326250603453777594175500187360389116729240"), BigInteger.Parse("32670510020758816978083085130507043184471273380659243275938904335757337482424"));
-            BigInteger target1 = BigInteger.Parse("53957576663012291606402345341061437133522758407718089353314528343643821967563");
-            BigInteger target2 = BigInteger.Parse("98386217607324929854432842186271083758341411730506808463586570492533445740059");
+       // [Ignore("heavy")]
+        public void HeavyTestComparison() {
+            var r = new Random(DateTime.Now.Millisecond);
+            var keyGen = new KeyGen();
+            for(int i = 0; i < 10000; i++) {
+                byte[] privateKeyBytes = new byte[32];
+                r.NextBytes(privateKeyBytes);
 
-            var targetPoint = new Tuple<BigInteger, BigInteger>(target1, target2);
-            var result = MySec256.Multiply(input1, point1);
+                var hexPrivate = Convert.ToHexString(privateKeyBytes);
 
-            Assert.AreEqual(targetPoint, result);
+                var libResult = keyGen.GetPublicKey(privateKeyBytes);
+                var nativeResult = keyGen.GetPublicKeyNative(privateKeyBytes);
+
+                Assert.AreEqual(libResult, nativeResult, hexPrivate+"-"+i, null);
+            }
+        }
+        [Test]
+        public void PlaingTestComparison() {
+            var r = new Random(DateTime.Now.Millisecond);
+            var keyGen = new KeyGen();
+            // for(int i = 0; i < 10000; i++) {
+            byte[] privateKeyBytes = new byte[32];
+
+            privateKeyBytes = Convert.FromHexString("FF80A7C177E8C2444DEE3C2B5AAC6688761DDB49BCD03124F8B10541547C90EB");
+            //r.NextBytes(privateKeyBytes);
+
+            var hexPrivate = Convert.ToHexString(privateKeyBytes);
+
+            var libResult = keyGen.GetPublicKey(privateKeyBytes);
+            var nativeResult = keyGen.GetPublicKeyNative(privateKeyBytes);
+
+            var libResultHex=Convert.ToHexString(libResult);
+            var nativeResultHex=Convert.ToHexString(nativeResult);
+            //025E75559CC1A98348FA5F6009843891FC4B83C74EACB727CC35B092D99B31738E
+            Assert.AreEqual(libResultHex, nativeResultHex, hexPrivate, null);
+            //}
         }
     }
 }

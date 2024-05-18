@@ -1,5 +1,6 @@
 ﻿using KeyGenNameSpace;
 using NBitcoin;
+using NBitcoin.Secp256k1;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.X509;
 using System;
@@ -10,8 +11,20 @@ namespace MyApp {
     internal class Program {
         static void Main(string[] args) {
             Console.WriteLine("Hello World!");
-            var gen=new KeyGen();
+            var ctx = new Context();
+            byte[] intBytes = BitConverter.GetBytes(3);
+            byte[] inBt2 =new byte[32];
 
+            //Array.Copy(intBytes, inBt2, intBytes.Length);
+
+            //ReadOnlySpan<byte> privSpan = new ReadOnlySpan<byte>(inBt2);
+            //var priv = ctx.CreateECPrivKey(privSpan);
+            //var pub=ctx.g
+            //var tst = new NBitcoin.Secp256k1.ECPrivKey();
+
+
+
+            
 
 
             //var res = gen.GenerateFromString("test");
