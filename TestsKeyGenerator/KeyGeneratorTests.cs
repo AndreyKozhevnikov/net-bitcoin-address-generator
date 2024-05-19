@@ -251,14 +251,14 @@ namespace TestsKeyGenerator {
             Assert.Less(10, elapsedMs);
         }
         [Test]
-        [Ignore("heavy")]
+      //  [Ignore("heavy")]
         public void PefromanceNativeSec256() {
             var r = new Random(DateTime.Now.Millisecond);
             var keyGen = new KeyGen();
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            for(int i = 0; i < 10000; i++) {
+            for(int i = 0; i < 1000; i++) {
 
-                if(i == 1000) {
+                if(i == 100) {
                     watch.Restart();
                 }
                 byte[] privateKeyBytes = new byte[32];

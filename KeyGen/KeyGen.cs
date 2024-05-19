@@ -1,6 +1,7 @@
 ﻿
 
 
+using plainSec256k1;
 using Secp256k1Net;
 using SimpleBase;
 using System.IO;
@@ -42,10 +43,11 @@ public class KeyGen {
     public void Initialize() {
         secp256k1 = new Secp256k1();
         mySHA256 = SHA256.Create();
+        mySecCalculator = new Sec256Calculator();
     }
 
 
-
+    Sec256Calculator mySecCalculator;
     SHA256 mySHA256;
     Secp256k1 secp256k1;
 
@@ -64,7 +66,7 @@ public class KeyGen {
         return compressed_public_key;
     }
     public byte[] GetPublicKeyNative(byte[] privateKey) {
-        return plainSec256k1.Sec256Calculator.GetPublicKeyNative(privateKey);
+        return mySecCalculator.GetCompressedPublicKey(privateKey);
     }
 
 
