@@ -57,7 +57,7 @@ public class KeyGen {
         // Derive public key bytes
         var publicKey = new byte[Secp256k1.PUBKEY_LENGTH];
         secp256k1.PublicKeyCreate(publicKey, privateKey);
-        var publicKeySt = Convert.ToHexString(publicKey);
+        // var publicKeySt = Convert.ToHexString(publicKey);
 
         // Serialize the public key to compressed format
         var compressed_public_key = new byte[Secp256k1.SERIALIZED_COMPRESSED_PUBKEY_LENGTH];
@@ -66,35 +66,109 @@ public class KeyGen {
         return compressed_public_key;
     }
     public byte[] GetPublicKeyNative(byte[] privateKey) {
+        Array.Reverse(privateKey);
         return mySecCalculator.GetCompressedPublicKey(privateKey);
     }
 
-
-
-    public AddressSet GenerateFromBytes(byte[] bytes) {
-
-        if(secp256k1 == null) {
-            Initialize();
-        }
-
-        //private key
-        var hexPrivate = Convert.ToHexString(bytes);
-        var fullKey = "80" + hexPrivate + "01";
-
-        //wif
+    public string GetPrivateKeyFromWif(string wif) {
+        var wifBytes = Base58.Bitcoin.Decode(wif);
+        var wifString = Convert.ToHexString(wifBytes);
+        var fullKey = wifString.Substring(0, wifString.Length - 8);
+        return fullKey;
+    }
+    public string GetWifFromPrivateKey(string fullKey) {
         var checkSum = GetCheckSum(fullKey);
         var wifString = fullKey + checkSum;
         var wifBytes = Convert.FromHexString(wifString);
         string wif = Base58.Bitcoin.Encode(wifBytes);
+        return wif;
+    }
+
+    public AddressSet GenerateFromPoint(Tuple<BigInteger, BigInteger> point) {
+        var compressed_public_key = mySecCalculator.GetCompressedPublicKeyFromPoint(point);
+        return GenerateFromCompressedPublicKeyBytes(compressed_public_key);
+    }
+    //public AddressSet GenerateFromBytesWrapper(byte[] bytes) {
+
+    //    if(secp256k1 == null) {
+    //        Initialize();
+    //    }
+
+    //    //private key
+    //    var hexPrivate = Convert.ToHexString(bytes);
+    //    var fullKey = "80" + hexPrivate + "01";
+
+    //    //wif
+    //    //var checkSum = GetCheckSum(fullKey);
+    //    //var wifString = fullKey + checkSum;
+    //    //var wifBytes = Convert.FromHexString(wifString);
+    //    string wif = GetWifFromPrivateKey(fullKey);
 
 
-        //public
+    //    //public
 
-        // Generate a private key
-        var privateKey = bytes;
+    //    // Generate a private key
+    //    var privateKey = bytes;
 
-        var compressed_public_key = GetPublicKey(privateKey);
-        var compressed_public_key_st = Convert.ToHexString(compressed_public_key).ToLower();
+    //    var compressed_public_key = GetPublicKey(privateKey);
+    //    //var compressed_public_key_st = Convert.ToHexString(compressed_public_key).ToLower();
+    //    //ripe160    
+    //    var hasher = new Org.BouncyCastle.Crypto.Digests.RipeMD160Digest();
+    //    var publSha = mySHA256.ComputeHash(compressed_public_key);
+    //    hasher.BlockUpdate(publSha, 0, publSha.Length);
+    //    var publicKeyHashByte = new byte[hasher.GetDigestSize()];
+    //    hasher.DoFinal(publicKeyHashByte, 0);
+
+    //    var public_key_hash_clean = Convert.ToHexString(publicKeyHashByte);
+
+
+    //    var public_key_hash = "00" + public_key_hash_clean;
+
+
+    //    //1adr
+
+    //    var tmpCheckSum = GetCheckSum(public_key_hash);
+    //    var tmpString = public_key_hash + tmpCheckSum;
+    //    var tmpBytes = Convert.FromHexString(tmpString);
+    //    string adr1 = Base58.Bitcoin.Encode(tmpBytes);
+
+
+    //    //3adr
+
+    //    var redeem_script = "0014" + public_key_hash.Substring(2);
+    //    var redeem_scriptBytes = Convert.FromHexString(redeem_script);
+    //    var redeemSha256 = mySHA256.ComputeHash(redeem_scriptBytes);
+    //    hasher.BlockUpdate(redeemSha256, 0, publSha.Length);
+    //    var redeemRipe160 = new byte[hasher.GetDigestSize()];
+    //    hasher.DoFinal(redeemRipe160, 0);
+    //    var redeemRipe160St = Convert.ToHexString(redeemRipe160);
+    //    var script_hash = "05" + redeemRipe160St;
+    //    tmpCheckSum = GetCheckSum(script_hash);
+    //    var adr3String = script_hash + tmpCheckSum;
+    //    var adr3Bytes = Convert.FromHexString(adr3String);
+    //    var adr3 = Base58.Bitcoin.Encode(adr3Bytes);
+
+
+    //    //bc adr
+
+    //    var witprog = Convert.FromHexString(public_key_hash_clean);
+    //    // var ver = Convert.FromHexString("0x00");
+    //    var adrBC = Bech32Converter.EncodeBech32(0, witprog, true, true);
+    //    //var adrBC2 = Bech32Converter.EncodeBech32(0, witprog, false, true);
+
+
+
+    //    var adr = new AddressSet();
+    //    adr.PrivateKey = hexPrivate;
+    //    adr.WIF = wif;
+    //    adr.Addresses.Add(adr1);
+    //    adr.Addresses.Add(adr3);
+    //    adr.Addresses.Add(adrBC);
+    //    return adr;
+    //}
+
+
+    public AddressSet GenerateFromCompressedPublicKeyBytes(byte[] compressed_public_key) {
         //ripe160    
         var hasher = new Org.BouncyCastle.Crypto.Digests.RipeMD160Digest();
         var publSha = mySHA256.ComputeHash(compressed_public_key);
@@ -110,10 +184,10 @@ public class KeyGen {
 
         //1adr
 
-        checkSum = GetCheckSum(public_key_hash);
-        wifString = public_key_hash + checkSum;
-        wifBytes = Convert.FromHexString(wifString);
-        string adr1 = Base58.Bitcoin.Encode(wifBytes);
+        var tmpCheckSum = GetCheckSum(public_key_hash);
+        var tmpString = public_key_hash + tmpCheckSum;
+        var tmpBytes = Convert.FromHexString(tmpString);
+        string adr1 = Base58.Bitcoin.Encode(tmpBytes);
 
 
         //3adr
@@ -126,8 +200,8 @@ public class KeyGen {
         hasher.DoFinal(redeemRipe160, 0);
         var redeemRipe160St = Convert.ToHexString(redeemRipe160);
         var script_hash = "05" + redeemRipe160St;
-        checkSum = GetCheckSum(script_hash);
-        var adr3String = script_hash + checkSum;
+        tmpCheckSum = GetCheckSum(script_hash);
+        var adr3String = script_hash + tmpCheckSum;
         var adr3Bytes = Convert.FromHexString(adr3String);
         var adr3 = Base58.Bitcoin.Encode(adr3Bytes);
 
@@ -142,11 +216,33 @@ public class KeyGen {
 
 
         var adr = new AddressSet();
-        adr.PrivateKey = hexPrivate;
-        adr.WIF = wif;
+        //adr.PrivateKey = hexPrivate;
+        //adr.WIF = wif;
         adr.Addresses.Add(adr1);
         adr.Addresses.Add(adr3);
         adr.Addresses.Add(adrBC);
+        return adr;
+    }
+
+    public AddressSet GenerateFromBytes(byte[] privateKey) {
+
+        if(secp256k1 == null) {
+            Initialize();
+        }
+        //private key
+        var hexPrivate = Convert.ToHexString(privateKey);
+        var fullKey = "80" + hexPrivate + "01";
+
+        //wif
+        string wif = GetWifFromPrivateKey(fullKey);
+
+
+        //public
+        var compressed_public_key = GetPublicKey(privateKey);
+
+        var adr = GenerateFromCompressedPublicKeyBytes(compressed_public_key);
+        adr.PrivateKey = hexPrivate;
+        adr.WIF = wif;
         return adr;
     }
 
