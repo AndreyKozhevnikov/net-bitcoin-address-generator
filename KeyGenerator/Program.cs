@@ -13,7 +13,7 @@ namespace MyApp {
             Console.WriteLine("Hello World!");
             var ctx = new Context();
             byte[] intBytes = BitConverter.GetBytes(3);
-            byte[] inBt2 =new byte[32];
+            byte[] inBt2 = new byte[32];
 
             //Array.Copy(intBytes, inBt2, intBytes.Length);
 
@@ -24,7 +24,7 @@ namespace MyApp {
 
 
 
-            
+
 
 
             //var res = gen.GenerateFromString("test");
@@ -66,7 +66,7 @@ namespace MyApp {
             //t1.Test4(19, "1NWmZRpHH4XSPwsW6dsS3nrNWfL1yrJj4w");
 
             //  t1.TestBitInt(number65, number66, "13zb1hQbWVsc2S7ZTZnP2G4undNNpdh5so");
-            t1.Test6();
+            t1.GenerateKeys();
         }
     }
 
@@ -126,13 +126,17 @@ namespace MyApp {
             Thread.Sleep(2000);
             t2.Start();
         }
-        void GenerateKeys() {
+      public  void GenerateKeys() {
             var k = new KeyGen();
             for(int i = 0; i < 1000; i++) {
-                var adrSet = k.GenerateFromString(i.ToString());
-                var val = adrSet.Addresses[1];
-                Debug.Print(Thread.CurrentThread.Name + " " + val.ToString());
+                var adrSet = k.GenerateFromBigInt(i);
+                // var adrSet = k.GenerateFromString(i.ToString());
+                //   var val = adrSet.Addresses[1];
+                //var val = string.Format("{0} {1} {2} {3} {4} {5}", adrSet.PrivateKey,adrSet.PublicKey,  adrSet.WIF, adrSet.Addresses[0], adrSet.Addresses[1], adrSet.Addresses[2]);
+               // Console.WriteLine(val);
+              //  Debug.Print(val);
             }
+            Console.ReadLine();
         }
 
 
@@ -154,7 +158,7 @@ namespace MyApp {
                     Console.WriteLine("found");
                     Console.WriteLine(adrSet.WIF);
                     Console.WriteLine(i);
-                    var hx= i.ToString("X");
+                    var hx = i.ToString("X");
                     Console.WriteLine(hx);
                     Console.WriteLine();
                     Console.ReadLine();
@@ -181,8 +185,8 @@ namespace MyApp {
             }
         }
 
-        public void TestBitInt(BigInteger min,BigInteger max, string target) {
-          
+        public void TestBitInt(BigInteger min, BigInteger max, string target) {
+
             var len = max - min;
             var k = new KeyGen();
             int kk = 0;

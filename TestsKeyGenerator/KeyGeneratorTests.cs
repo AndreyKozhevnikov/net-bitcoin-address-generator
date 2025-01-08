@@ -344,6 +344,23 @@ public class HashConverterTest {
     }
 
     [Test]
+    public void GenerateFromBigInt_1_del() {
+
+        List<AddressSet> addresses = new List<AddressSet>();
+
+        for(int i = 1; i < 15; i++) {
+            var res = new KeyGen().GenerateFromBigInt(i);
+            addresses.Add(res);
+        }
+
+        var res2= new KeyGen().GenerateFromBigInt(BigInteger.Parse("35"));
+        //Assert.AreEqual("1JVTLs18ZJQAqaJGUrJd4Q2wqfNJKeKdLy", res.Addresses[0]);
+        //Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
+        //Assert.AreEqual("bc1qhlduvkhzkre2lef7up5krc72tupc94l2znksqd", res.Addresses[2]);
+
+    }
+
+    [Test]
     public void GenerateFromPoint_1() {
         var item1 = BigInteger.Parse("77417797296099881833181316143566234980571395824668854934796405065412327904623");
         var item2 = BigInteger.Parse("42782294386340041608224734509071763068918350062375143587290260851711680286243");
@@ -355,6 +372,21 @@ public class HashConverterTest {
         Assert.AreEqual("1JVTLs18ZJQAqaJGUrJd4Q2wqfNJKeKdLy", res.Addresses[0]);
         Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
         Assert.AreEqual("bc1qhlduvkhzkre2lef7up5krc72tupc94l2znksqd", res.Addresses[2]);
+
+    }
+
+
+    [Test]
+    public void GenerateFromPublic() {
+        var publ = "02145d2611c823a396ef6712ce0f712f09b9b4f3135e3e0aa3230fb9b6d08d1e16";
+      
+        var publBytes=Convert.FromHexString(publ);
+        var res = new KeyGen().GenerateFromCompressedPublicKeyBytes(publBytes);
+
+
+        Assert.AreEqual("16RGFo6hjq9ym6Pj7N5H7L1NR1rVPJyw2v", res.Addresses[0]);
+        //Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
+        //Assert.AreEqual("bc1qhlduvkhzkre2lef7up5krc72tupc94l2znksqd", res.Addresses[2]);
 
     }
 }
