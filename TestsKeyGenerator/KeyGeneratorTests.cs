@@ -389,5 +389,61 @@ public class HashConverterTest {
         //Assert.AreEqual("bc1qhlduvkhzkre2lef7up5krc72tupc94l2znksqd", res.Addresses[2]);
 
     }
+
+    [Test]
+    public void GenerateFromPublic_1() {
+        var publ = "0301c1768b48843933bd7f0e8782716e8439fc44723d3745feefde2d57b761f503";
+
+        var publBytes = Convert.FromHexString(publ);
+        var res = new KeyGen().GenerateFromCompressedPublicKeyBytes(publBytes);
+
+
+        //Assert.AreEqual("16RGFo6hjq9ym6Pj7N5H7L1NR1rVPJyw2v", res.Addresses[0]);
+        //Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
+        Assert.AreEqual("bc1qs5lvx9ngvqm3aenmwa20lp0p84aq6e5cuayqcp", res.Addresses[2]);
+
+    }
+
+    [Test]
+    public void GenerateFromPublic_2() {
+        var publ = "0304603ec89cb8b92a4123b558aa18a7015ff32bdf33d82a94520b922e52767751";
+
+        var publBytes = Convert.FromHexString(publ);
+        var res = new KeyGen().GenerateFromCompressedPublicKeyBytes(publBytes);
+
+
+        Assert.AreEqual("1P6gxFeozGpWfVGr9qfvJc7osaqXUyC2ed", res.Addresses[0]);
+        //Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
+        //Assert.AreEqual("bc1qs5lvx9ngvqm3aenmwa20lp0p84aq6e5cuayqcp", res.Addresses[2]);
+
+    }
+
+    [Test]
+    public void GenerateFromPublic_3() {
+        var publ = "0384c6a9ffe3ca7c9ab23d910bc5ab5e8c7be7f3336fdc66d9ff849e950319c230";
+
+        var publBytes = Convert.FromHexString(publ);
+        var res = new KeyGen().GenerateFromCompressedPublicKeyBytes(publBytes);
+
+
+        //Assert.AreEqual("1P6gxFeozGpWfVGr9qfvJc7osaqXUyC2ed", res.Addresses[0]);
+        //Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
+        Assert.AreEqual("bc1q2retpdh6u0ncaj72lnkqzpwe530tu902pvkvxh", res.Addresses[2]);
+
+    }
+
+    [Test]
+    public void GenerateFromPublic_4() {
+        var publ = "0234f1b2f7fcd95a0541290feacd759f5cc4494de524b266055300e059688554a9";
+
+        var publBytes = Convert.FromHexString(publ);
+        var res = new KeyGen().GenerateFromCompressedPublicKeyBytes(publBytes);
+
+
+        //Assert.AreEqual("1P6gxFeozGpWfVGr9qfvJc7osaqXUyC2ed", res.Addresses[0]);
+        //Assert.AreEqual("393gTrYqFuM79Pao42asiz8EoRMaVBqV98", res.Addresses[1]);
+        Assert.AreEqual("bc1qrnk7j7hyvfcm372x7dl0n82jckyve8ys2dgy93", res.Addresses[2]);
+
+    }
 }
 
